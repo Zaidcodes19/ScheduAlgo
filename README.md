@@ -4,7 +4,6 @@
 
 ScheduAlgo is a browser-based CPU scheduling algorithm simulator. Pick an algorithm, add processes, and instantly see the resulting schedule, Gantt chart, and performance metrics — all computed live in the browser with no backend required.
 
-![ScheduAlgo screenshot](SchedulAlgo/CSS/ChatGPT_Image_Jul_4__2026__01_21_09_PM.png)
 
 ## Features
 
