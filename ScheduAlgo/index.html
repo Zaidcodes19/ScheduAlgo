@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScheduAlgo | By - Zaid Inamdar</title>
+    <link rel="stylesheet" href="CSS/styles.css">
+</head>
+
+<body>
+    <div class="navbar">
+        <nav>
+            <h1 class="logo">Schedu<span>Algo</span></h1>
+            <div class="navLinks">
+                <span>Visualize</span>
+                <span class="navDot">•</span>
+                <span>Learn</span>
+                <span class="navDot">•</span>
+                <span>Experiment</span>
+            </div>
+            <button type="button" id="themeToggle" class="themeToggle" aria-label="Toggle dark mode">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="4" />
+                    <path d="M12 2v2" />
+                    <path d="M12 20v2" />
+                    <path d="m4.93 4.93 1.41 1.41" />
+                    <path d="m17.66 17.66 1.41 1.41" />
+                    <path d="M2 12h2" />
+                    <path d="M20 12h2" />
+                    <path d="m6.34 17.66-1.41 1.41" />
+                    <path d="m19.07 4.93-1.41 1.41" />
+                </svg>
+            </button>
+        </nav>
+    </div>
+    <main>
+        <section class="hero">
+            <div class="algoFormSection">
+                <div class="algoSelection">
+                    <div class="algoDropDown">
+                        <p><span class="number">1</span> Choose Algorithm</p>
+                        <select id="algorithm">
+                            <option value="" selected>Select an algorithm to begin</option>
+                            <option value="fcfs">FCFS (First Come First Serve)</option>
+                            <option value="sjfnp">SJF Non-Preemptive</option>
+                            <option value="sjf">SJF Preemptive (SRTF)</option>
+                            <option value="rr">Round Robin</option>
+                        </select>
+                        <p class="helperText" id="algoHelperText">Select an algorithm to configure the simulation.</p>
+                    </div>
+
+                    <div class="addProcessSection">
+                        <p><span class="number">2</span> Add Process</p>
+                        <p class="helperText" id="addProcessHelperText">Add process details here.</p>
+                        <form id="AlgoForm">
+                            <div class="inputField">
+                                <label for="arrivalTime">Arrival Time</label>
+                                <input type="number" id="arrivalTime" name="arrivalTime" placeholder="-" disabled>
+                            </div>
+                            <div class="inputField">
+                                <label for="burstTime">Burst Time</label>
+                                <input type="number" id="burstTime" name="burstTime" placeholder="-" disabled>
+                            </div>
+                            <div class="inputField">
+                                <button type="submit" disabled>+ Add Process</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="processListSection">
+                        <p><span class="number">3</span> Process List</p>
+                        <div class="processTable">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Process</th>
+                                        <th>Arrival Time</th>
+                                        <th>Burst Time</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tableBody"></tbody>
+                            </table>
+                        </div>
+                        <div class="listActions">
+                            <button type="button" id="clearAllBtn" class="btnDanger">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M3 6h18" />
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                                </svg>
+                                Clear All
+                            </button>
+                            <button type="button" id="resetBtn" class="btnOutline">Reset</button>
+                        </div>
+                    </div>
+
+                    <div class="startSimulationButton">
+                        <button type="button" id="startSimulationBtn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                fill="currentColor" stroke="none">
+                                <path d="M8 5v14l11-7z" />
+                            </svg>
+                            Start Simulation
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="simulationSection">
+                <h2 class="simulationHeading">Simulation</h2>
+
+                <div class="resultTable">
+                    <div class="processTable">
+                        <h3>Process Table</h3>
+                        <div class="tableWrapper hidden" id="resultsTableWrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Process</th>
+                                        <th>Arrival Time</th>
+                                        <th>Burst Time</th>
+                                        <th>Completion Time</th>
+                                        <th>Turnaround Time</th>
+                                        <th>Waiting Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="resultsTableBody"></tbody>
+                            </table>
+                        </div>
+                        <div class="emptyMsg" id="resultsEmptyMsg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-file-text-icon lucide-file-text">
+                                <path
+                                    d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
+                                <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+                                <path d="M10 9H8" />
+                                <path d="M16 13H8" />
+                                <path d="M16 17H8" />
+                            </svg>
+                            <div>
+                                <h3>No algorithm selected</h3>
+                                <p>Select an algorithm and add processes to see the process table here.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ganttChart">
+                    <h3>GANTT CHART</h3>
+                    <div class="ganttWrapper" id="ganttWrapper">
+                        <div class="processesContainer hidden" id="ganttContainer"></div>
+                        <div class="ganttTimeline hidden" id="ganttTimeline"></div>
+                        <div class="emptyMsg" id="ganttEmptyMsg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-chart-no-axes-gantt-icon lucide-chart-no-axes-gantt">
+                                <path d="M6 5h12" />
+                                <path d="M4 12h10" />
+                                <path d="M12 19h8" />
+                            </svg>
+                            <div>
+                                <h3>No data to display</h3>
+                                <p>Run the simulation to see the Gantt chart here.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="resultsSection">
+                    <h3>Results</h3>
+                    <div class="resultsContainer">
+                        <div class="results">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-hourglass-icon lucide-hourglass">
+                                <path d="M5 22h14" />
+                                <path d="M5 2h14" />
+                                <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22" />
+                                <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2" />
+                            </svg>
+                            <div>
+                                <p>Average Waiting Time</p>
+                                <p id="avgWaitingTime">-</p>
+                            </div>
+                        </div>
+                        <div class="results">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-clock-icon lucide-clock">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M12 6v6l4 2" />
+                            </svg>
+                            <div>
+                                <p>Average Turnaround Time</p>
+                                <p id="avgTurnaroundTime">-</p>
+                            </div>
+                        </div>
+                        <div class="results">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-cpu-icon lucide-cpu">
+                                <path d="M12 20v2" />
+                                <path d="M12 2v2" />
+                                <path d="M17 20v2" />
+                                <path d="M17 2v2" />
+                                <path d="M2 12h2" />
+                                <path d="M2 17h2" />
+                                <path d="M2 7h2" />
+                                <path d="M20 12h2" />
+                                <path d="M20 17h2" />
+                                <path d="M20 7h2" />
+                                <path d="M7 20v2" />
+                                <path d="M7 2v2" />
+                                <rect x="4" y="4" width="16" height="16" rx="2" />
+                                <rect x="8" y="8" width="8" height="8" rx="1" />
+                            </svg>
+                            <div>
+                                <p>CPU Utilization</p>
+                                <p id="cpuUtilization">-</p>
+                            </div>
+                        </div>
+                        <div class="results">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-chart-column-increasing-icon lucide-chart-column-increasing">
+                                <path d="M13 17V9" />
+                                <path d="M18 17V5" />
+                                <path d="M3 3v16a2 2 0 0 0 2 2h16" />
+                                <path d="M8 17v-3" />
+                            </svg>
+                            <div>
+                                <p>Throughput</p>
+                                <p id="throughput">-</p>
+                            </div>
+                        </div>
+                        <div class="results">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-users-icon lucide-users">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                                <path d="M16 3.128a4 4 0 0 1 0 7.744" />
+                                <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                                <circle cx="9" cy="7" r="4" />
+                            </svg>
+                            <div>
+                                <p>Total Processes</p>
+                                <p id="totalProcesses">-</p>
+                            </div>
+                        </div>
+                        <div class="results">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-clock-icon lucide-clock">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M12 6v6l4 2" />
+                            </svg>
+                            <div>
+                                <p>Total Time</p>
+                                <p id="totalTime">-</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <h2 class="logo">Schedu<span>Algo</span></h2>
+            <p>Visualize • Learn • Experiment</p>
+
+            <div class="footer-links">
+                <a href="https://github.com/Zaidcodes19" target="_blank">
+                    GitHub
+                </a>
+                <span>•</span>
+
+                <a href="https://www.linkedin.com/in/zaid-inamdar/" target="_blank">
+                    LinkedIn
+                </a>
+                <span>•</span>
+
+                <a href="mailto:inamdarzaid587@gmail.com">
+                    Email
+                </a>
+            </div>
+
+            <p class="copyright">
+                © 2026 Zaid Inamdar. All Rights Reserved.
+            </p>
+        </div>
+    </footer>
+    <script src="JS/app.js"></script>
+</body>
+
+</html>
